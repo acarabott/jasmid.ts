@@ -1,6 +1,6 @@
 import { BufferReader } from "./BufferReader"
 
-export type MidiFileEvent =
+export type MidiEvent =
   | { type: "meta"; subType: "sequenceNumber"; typeByte: number; deltaTime: number; number: number }
   | { type: "meta"; subType: "text"; typeByte: number; deltaTime: number; text: string }
   | { type: "meta"; subType: "copyrightNotice"; typeByte: number; deltaTime: number; text: string }
@@ -55,7 +55,7 @@ function parseHeader(reader: BufferReader) {
 }
 
 function parseTracks(reader: BufferReader) {
-  let tracks: MidiFileEvent[][] = []
+  let tracks: MidiEvent[][] = []
   while (!reader.eof()) {
     const trackChunk = reader.midiChunk()
 
@@ -64,7 +64,7 @@ function parseTracks(reader: BufferReader) {
     }
 
     const trackTrack = new BufferReader(trackChunk.data)
-    let track: MidiFileEvent[] = []
+    let track: MidiEvent[] = []
     while (!trackTrack.eof()) {
       const lastEvent = track[track.length - 1]
       const event = parseEvent(trackTrack, lastEvent ? lastEvent.typeByte : undefined)
@@ -76,7 +76,7 @@ function parseTracks(reader: BufferReader) {
   return tracks
 }
 
-function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): MidiFileEvent {
+function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): MidiEvent {
   const deltaTime = reader.midiInt()
   let typeByte = reader.uint8()
 
