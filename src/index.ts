@@ -27,7 +27,7 @@ export type MidiFileEvent =
   | { type: "midi"; subType: "channelAftertouch"; typeByte: number; deltaTime: number; channel: number; amount: number }
   | { type: "midi"; subType: "pitchBend"; typeByte: number; deltaTime: number; channel: number; value: number }
 
-export function MidiFile(buffer: ArrayBuffer) {
+export function parseMidiFile(buffer: ArrayBuffer) {
   const reader = new BufferReader(buffer)
 
   const header = parseHeader(reader)
