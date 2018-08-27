@@ -23,7 +23,7 @@ export type MidiEvent =
   | { type: "midi"; subType: "noteOff" | "noteOn"; typeByte: number; deltaTime: number; channel: number; note: number; velocity: number }
   | { type: "midi"; subType: "noteAftertouch"; typeByte: number; deltaTime: number; channel: number; note: number; amount: number }
   | { type: "midi"; subType: "controller"; typeByte: number; deltaTime: number; channel: number; controllerType: number; value: number }
-  | { type: "midi"; subType: "programChange"; typeByte: number; deltaTime: number; channel: number; programNumber: number }
+  | { type: "midi"; subType: "programChange"; typeByte: number; deltaTime: number; channel: number; program: number }
   | { type: "midi"; subType: "channelAftertouch"; typeByte: number; deltaTime: number; channel: number; amount: number }
   | { type: "midi"; subType: "pitchBend"; typeByte: number; deltaTime: number; channel: number; value: number }
 
@@ -333,7 +333,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           typeByte,
           deltaTime,
           channel,
-          programNumber: value,
+          program: value,
         }
       case 0x0d:
         return {
