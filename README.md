@@ -14,6 +14,8 @@ npm i jasmid.ts
 
 ## Example
 ```js
+import { parseMidiFile } from "jasmid.ts"
+
 const midi = parseMidiFile(arrayBuffer)
 
 // midi has type:
