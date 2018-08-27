@@ -2,7 +2,7 @@ export class BufferReader {
   private position: number
   private data: DataView
   
-  constructor(buffer: ArrayBuffer) {
+  constructor(buffer: ArrayBufferLike) {
     this.position = 0
     this.data = new DataView(buffer)
   }
