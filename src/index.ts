@@ -19,9 +19,9 @@ export type MidiEvent =
   | { type: "meta"; subType: undefined; typeByte: number; deltaTime: number; data: ArrayBuffer }
   | { type: "sysEx"; subType: undefined; typeByte: number; deltaTime: number; data: ArrayBuffer }
   | { type: "dividedSysEx"; subType: undefined; typeByte: number; deltaTime: number; data: ArrayBuffer }
-  | { type: "midi"; subType: "noteOff"; typeByte: number; deltaTime: number; channel: number; noteNumber: number; velocity: number }
-  | { type: "midi"; subType: "noteOff" | "noteOn"; typeByte: number; deltaTime: number; channel: number; noteNumber: number; velocity: number }
-  | { type: "midi"; subType: "noteAftertouch"; typeByte: number; deltaTime: number; channel: number; noteNumber: number; amount: number }
+  | { type: "midi"; subType: "noteOff"; typeByte: number; deltaTime: number; channel: number; note: number; velocity: number }
+  | { type: "midi"; subType: "noteOff" | "noteOn"; typeByte: number; deltaTime: number; channel: number; note: number; velocity: number }
+  | { type: "midi"; subType: "noteAftertouch"; typeByte: number; deltaTime: number; channel: number; note: number; amount: number }
   | { type: "midi"; subType: "controller"; typeByte: number; deltaTime: number; channel: number; controllerType: number; value: number }
   | { type: "midi"; subType: "programChange"; typeByte: number; deltaTime: number; channel: number; programNumber: number }
   | { type: "midi"; subType: "channelAftertouch"; typeByte: number; deltaTime: number; channel: number; amount: number }
@@ -292,7 +292,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           typeByte,
           deltaTime,
           channel,
-          noteNumber: value,
+          note: value,
           velocity: reader.uint8(),
         }
       case 0x09:
@@ -303,7 +303,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           typeByte,
           deltaTime,
           channel,
-          noteNumber: value,
+          note: value,
           velocity,
         }
       case 0x0a:
@@ -313,7 +313,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           typeByte,
           deltaTime,
           channel,
-          noteNumber: value,
+          note: value,
           amount: reader.uint8(),
         }
       case 0x0b:
