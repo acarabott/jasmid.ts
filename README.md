@@ -15,7 +15,13 @@ npm i jasmid.ts
 ## Example
 ```js
 const midi = parseMidiFile(arrayBuffer)
-// { header: { formatType: number; trackCount: number; ticksPerBeat: number }; tracks: MidiEvent[][] }
+
+// midi has type:
+// {
+//   header: { formatType: number; trackCount: number; ticksPerBeat: number };
+//   tracks: MidiEvent[][];
+// }
+
 ```
 
 ## API
