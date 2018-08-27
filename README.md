@@ -12,6 +12,12 @@ Fork of [jasmid](https://github.com/gasman/jasmid) MIDI file reader in TypeScrip
 npm i jasmid.ts
 ```
 
+## Example
+```js
+const midi = parseMidiFile(arrayBuffer)
+// { header: { formatType: number; trackCount: number; ticksPerBeat: number }; tracks: MidiEvent[][] }
+```
+
 ## API
 
 See [src/index.js](src/index.js#L1).
