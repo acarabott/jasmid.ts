@@ -28,7 +28,7 @@ const midi = parseMidiFile(arrayBuffer)
 
 ## API
 
-See [src/index.js](src/index.js#L1).
+See [src/index.ts](src/index.ts#L1).
 
 ## Donate
 
