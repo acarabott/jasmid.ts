@@ -1,22 +1,22 @@
 import { BufferReader } from "./BufferReader"
 
 export type MidiEvent =
-  | { type: "meta"; subType: "sequenceNumber"; typeByte: number; deltaTime: number; number: number }
-  | { type: "meta"; subType: "text"; typeByte: number; deltaTime: number; text: string }
-  | { type: "meta"; subType: "copyrightNotice"; typeByte: number; deltaTime: number; text: string }
-  | { type: "meta"; subType: "trackName"; typeByte: number; deltaTime: number; text: string }
-  | { type: "meta"; subType: "instrumentName"; typeByte: number; deltaTime: number; text: string }
-  | { type: "meta"; subType: "lyrics"; typeByte: number; deltaTime: number; text: string }
-  | { type: "meta"; subType: "marker"; typeByte: number; deltaTime: number; text: string }
-  | { type: "meta"; subType: "cuePoint"; typeByte: number; deltaTime: number; text: string }
-  | { type: "meta"; subType: "midiChannelPrefix"; typeByte: number; deltaTime: number; channel: number }
-  | { type: "meta"; subType: "endOfTrack"; typeByte: number; deltaTime: number }
-  | { type: "meta"; subType: "setTempo"; typeByte: number; deltaTime: number; microsecondsPerBeat: number }
-  | { type: "meta"; subType: "smpteOffset"; typeByte: number; deltaTime: number; frameRate: number; hour: number; min: number; sec: number; frame: number; subFrame: number }
-  | { type: "meta"; subType: "timeSignature"; typeByte: number; deltaTime: number; numerator: number; denominator: number; metronome: number; thirtySeconds: number }
-  | { type: "meta"; subType: "keySignature"; typeByte: number; deltaTime: number; key: number; scale: number }
-  | { type: "meta"; subType: "sequencerSpecific"; typeByte: number; deltaTime: number; data: ArrayBuffer }
-  | { type: "meta"; subType: undefined; typeByte: number; deltaTime: number; data: ArrayBuffer }
+  | { type: "meta"; subType: "sequenceNumber"; typeByte: number; subTypeByte: number; deltaTime: number; number: number }
+  | { type: "meta"; subType: "text"; typeByte: number; subTypeByte: number; deltaTime: number; text: string }
+  | { type: "meta"; subType: "copyrightNotice"; typeByte: number; subTypeByte: number; deltaTime: number; text: string }
+  | { type: "meta"; subType: "trackName"; typeByte: number; subTypeByte: number; deltaTime: number; text: string }
+  | { type: "meta"; subType: "instrumentName"; typeByte: number; subTypeByte: number; deltaTime: number; text: string }
+  | { type: "meta"; subType: "lyrics"; typeByte: number; subTypeByte: number; deltaTime: number; text: string }
+  | { type: "meta"; subType: "marker"; typeByte: number; subTypeByte: number; deltaTime: number; text: string }
+  | { type: "meta"; subType: "cuePoint"; typeByte: number; subTypeByte: number; deltaTime: number; text: string }
+  | { type: "meta"; subType: "midiChannelPrefix"; typeByte: number; subTypeByte: number; deltaTime: number; channel: number }
+  | { type: "meta"; subType: "endOfTrack"; typeByte: number; subTypeByte: number; deltaTime: number }
+  | { type: "meta"; subType: "setTempo"; typeByte: number; subTypeByte: number; deltaTime: number; microsecondsPerBeat: number }
+  | { type: "meta"; subType: "smpteOffset"; typeByte: number; subTypeByte: number; deltaTime: number; frameRate: number; hour: number; min: number; sec: number; frame: number; subFrame: number }
+  | { type: "meta"; subType: "timeSignature"; typeByte: number; subTypeByte: number; deltaTime: number; numerator: number; denominator: number; metronome: number; thirtySeconds: number }
+  | { type: "meta"; subType: "keySignature"; typeByte: number; subTypeByte: number; deltaTime: number; key: number; scale: number }
+  | { type: "meta"; subType: "sequencerSpecific"; typeByte: number; subTypeByte: number; deltaTime: number; data: ArrayBuffer }
+  | { type: "meta"; subType: undefined; typeByte: number; subTypeByte: number; deltaTime: number; data: ArrayBuffer }
   | { type: "sysEx"; subType: undefined; typeByte: number; deltaTime: number; data: ArrayBuffer }
   | { type: "dividedSysEx"; subType: undefined; typeByte: number; deltaTime: number; data: ArrayBuffer }
   | { type: "midi"; subType: "noteOff"; typeByte: number; deltaTime: number; channel: number; note: number; velocity: number }
@@ -96,6 +96,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "sequenceNumber" as "sequenceNumber",
           typeByte,
+          subTypeByte,
           deltaTime,
           number: reader.uint16(),
         }
@@ -104,6 +105,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "text" as "text",
           typeByte,
+          subTypeByte,
           deltaTime,
           text: reader.string(length),
         }
@@ -112,6 +114,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "copyrightNotice" as "copyrightNotice",
           typeByte,
+          subTypeByte,
           deltaTime,
           text: reader.string(length),
         }
@@ -120,6 +123,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "trackName" as "trackName",
           typeByte,
+          subTypeByte,
           deltaTime,
           text: reader.string(length),
         }
@@ -128,6 +132,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "instrumentName" as "instrumentName",
           typeByte,
+          subTypeByte,
           deltaTime,
           text: reader.string(length),
         }
@@ -136,6 +141,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "lyrics" as "lyrics",
           typeByte,
+          subTypeByte,
           deltaTime,
           text: reader.string(length),
         }
@@ -144,6 +150,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "marker" as "marker",
           typeByte,
+          subTypeByte,
           deltaTime,
           text: reader.string(length),
         }
@@ -152,6 +159,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "cuePoint" as "cuePoint",
           typeByte,
+          subTypeByte,
           deltaTime,
           text: reader.string(length),
         }
@@ -163,6 +171,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "midiChannelPrefix" as "midiChannelPrefix",
           typeByte,
+          subTypeByte,
           deltaTime,
           channel: reader.uint8(),
         }
@@ -174,6 +183,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "endOfTrack" as "endOfTrack",
           typeByte,
+          subTypeByte,
           deltaTime,
         }
       case 0x51:
@@ -184,6 +194,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "setTempo" as "setTempo",
           typeByte,
+          subTypeByte,
           deltaTime,
           microsecondsPerBeat: (reader.uint8() << 16) + (reader.uint8() << 8) + reader.uint8(),
         }
@@ -196,6 +207,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "smpteOffset" as "smpteOffset",
           typeByte,
+          subTypeByte,
           deltaTime,
           frameRate: getFrameRate(hourByte),
           hour: hourByte & 0x1f,
@@ -212,6 +224,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "timeSignature" as "timeSignature",
           typeByte,
+          subTypeByte,
           deltaTime,
           numerator: reader.uint8(),
           denominator: Math.pow(2, reader.uint8()),
@@ -226,6 +239,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "keySignature" as "keySignature",
           typeByte,
+          subTypeByte,
           deltaTime,
           key: reader.int8(),
           scale: reader.uint8(),
@@ -235,6 +249,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: "sequencerSpecific" as "sequencerSpecific",
           typeByte,
+          subTypeByte,
           deltaTime,
           data: reader.read(length),
         }
@@ -243,6 +258,7 @@ function parseEvent(reader: BufferReader, lastTypeByte: number | undefined): Mid
           type,
           subType: undefined,
           typeByte,
+          subTypeByte,
           deltaTime,
           data: reader.read(length),
         }
